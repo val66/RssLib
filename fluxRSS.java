@@ -38,21 +38,17 @@ public class fluxRSS {
 
     public List<SyndEntry> getAllEntries() {
         entries = feed.getEntries();
-        System.out.println("entries size = " + entries.size());
         return entries;
     }
 
     public SyndFeed agregate(String[] urls) {
         try {
-            System.out.println("urls[] size = " + urls.length);
             for (int i = 0; i < urls.length; i++) {
-                System.out.println("urls[" + i + "] = " + urls[i]);
                 URL inputUrl = new URL(urls[i]);
 
                 SyndFeedInput input = new SyndFeedInput();
                 SyndFeed inFeed = input.build(new XmlReader(inputUrl));
 
-                System.out.println("inFeed.getEntries.size() = " + inFeed.getEntries().size());
                 sortEntriesByDate(inFeed.getEntries());
             }
             return feed;
@@ -87,7 +83,6 @@ public class fluxRSS {
     }
 
     public void displayContent() {
-        System.out.println("entries size dans displayContent = " + entries.size());
         for (Iterator<?> entryIter = feed.getEntries().iterator(); entryIter.hasNext(); ) {
             SyndEntry syndEntry = (SyndEntry) entryIter.next();
 
@@ -104,7 +99,6 @@ public class fluxRSS {
     }
 
     public void displayDescription() {
-        System.out.println("entries size dans displayContent = " + entries.size());
         for (Iterator<?> entryIter = feed.getEntries().iterator(); entryIter.hasNext(); ) {
             SyndEntry syndEntry = (SyndEntry) entryIter.next();
             System.out.println(syndEntry.getDescription().getValue());
