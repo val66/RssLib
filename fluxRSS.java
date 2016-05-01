@@ -53,8 +53,7 @@ public class fluxRSS {
                 SyndFeed inFeed = input.build(new XmlReader(inputUrl));
 
                 System.out.println("inFeed.getEntries.size() = " + inFeed.getEntries().size());
-
-                feed.getEntries().addAll(inFeed.getEntries());
+                sortEntriesByDate(inFeed.getEntries());
             }
             return feed;
 
@@ -67,6 +66,24 @@ public class fluxRSS {
 
     public void readFlux() {
         System.out.println(feed);
+    }
+
+    public void sortEntriesByDate(List<SyndEntry> newList){
+
+        boolean added = false;
+
+        for (int i = 0; i < newList.size(); i++){
+            added = false;
+            for (int ii = 0; ii < entries.size(); ii++) {
+                if (newList.get(i).getPublishedDate().compareTo(entries.get(ii).getPublishedDate()) > 0) {
+                    entries.add(ii, newList.get(i));
+                    added = true;
+                    break;
+                }
+            }
+            if (!added)
+                entries.add(newList.get(i));
+        }
     }
 
     public void displayContent() {
@@ -91,6 +108,15 @@ public class fluxRSS {
         for (Iterator<?> entryIter = feed.getEntries().iterator(); entryIter.hasNext(); ) {
             SyndEntry syndEntry = (SyndEntry) entryIter.next();
             System.out.println(syndEntry.getDescription().getValue());
+            System.out.println("--------------------------------");
+
+        }
+    }
+
+    public void displayDate(){
+        for (Iterator<?> entryIter = feed.getEntries().iterator(); entryIter.hasNext(); ) {
+            SyndEntry syndEntry = (SyndEntry) entryIter.next();
+            System.out.println(syndEntry.getPublishedDate());
             System.out.println("--------------------------------");
 
         }
